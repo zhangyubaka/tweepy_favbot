@@ -15,13 +15,14 @@ auth.set_access_token(access_token, access_token_secret)
 
 api = tweepy.API(auth)
 
-def getdata():
+def tdata():
     userid = str(input("Please input id who you want fav attack\n"))
     count = input("input number you want to fav!\n")
-    fav = api.user_timeline(id = userid, count = count)
+    return userid, count
 
 def main():
-    getdata()
+    t = tdata()
+    fav = api.user_timeline(id = t[0], count = t[1])
     try:
         for status in fav:
             api.create_favorite(status.id_str)
