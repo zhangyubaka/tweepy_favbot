@@ -21,5 +21,10 @@ fav = api.user_timeline(id = userid, count = count)
 try:
     for status in fav:
         api.create_favorite(status.id_str)
-except:
-    pass
+except tweepy.error.TweepError as e:
+    if e.args[0][0]['code'] == 139:
+        print("You have already favorited this status! \n")
+    else:
+        print(e.reason)
+finally:
+    print("Done!")
