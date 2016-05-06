@@ -28,10 +28,15 @@ def tdata():
 
 def main():
     t = tdata()
-    fav = api.user_timeline(id=t[0], count=t[1])
+    tl = []
+
+    fav = api.user_timeline(id = t[0], count = t[1])
+
+    for status in fav:
+        tl.append(status.id_str)
+
     try:
-        for status in fav:
-            api.create_favorite(status.id_str)
+        pool.map(api.create_favorite, tl)
     except tweepy.error.TweepError as e:
         if e.args[0][0]['code'] == 139:
             print("You have already favorited this status! \n")
@@ -42,4 +47,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
